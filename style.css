@@ -14,7 +14,6 @@ body {
   padding: 0;
 }
 
-/* Removed unused .main-wrapper rule */
 
 /* Ventana de la calculadora */
 .container {
@@ -82,4 +81,70 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+ .historial-table-container {
+      width: 100vw;
+      margin: 0;
+      padding: 0;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      margin-bottom: 32px;
+    }
+    th, td {
+      padding: 16px 12px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: center;
+    }
+    th {
+      background: #f1f3f6;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin: 32px 0;
+      width: 100vw;
+      padding: 0 24px;
+    }
+    .summary-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 24px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .summary-card.positivo { color: #388e3c; }
+    .summary-card.negativo { color: #d32f2f; }
+    .summary-card.neutro { color: #757575; }
+    .selector-wrapper {
+  text-align: center;
+  margin: 24px 0;
+}
+
+.selector-wrapper {
+  text-align: center;
+  margin: 300x 0 32px;
+}
+
+.selector-wrapper label {
+  font-size: 18px;
+  margin-right: 12px;
+}
+
+.selector-wrapper select {
+  padding: 8px 14px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
 }

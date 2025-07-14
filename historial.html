@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>📜 Historial de Trades</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1 style="text-align:center; margin-top:32px;">📜 Historial de Trades</h1>
+  <div class="historial-table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Par</th>
+          <th>Entrada</th>
+          <th>Salida</th>
+          <th>Posición</th>
+          <th>Unidades</th>
+          <th>Valor Final</th>
+          <th>Ganancia</th>
+          <th>ROI (%)</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-historial"></tbody>
+    </table>
+    <button onclick="borrarHistorial()" style="margin-top:20px;">🗑️ Borrar historial</button>
+  </div>
+  <h2 style="text-align:center; margin-top:48px;">📊 Porcentaje total de ganancia/pérdida por cada par</h2>
+  <div class="summary-grid" id="summary-grid"></div>
+  <script>
+    function cargarHistorial() {
+      const historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
+      const tabla = document.getElementById("tabla-historial");
+      tabla.innerHTML = "";
+      const resumen = {};
+
+      historial.forEach(trade => {
+        tabla.innerHTML = `
+          <tr>
+            <td>${trade.fecha}</td>
+            <td>${trade.par}</td>
+            <td>${trade.entrada}</td>
+            <td>${trade.salida}</td>
+            <td>${trade.posicion}</td>
+            <td>${trade.unidades}</td>
+            <td>${trade.valorFinal}</td>
+            <td>${trade.ganancia}</td>
+            <td>${trade.roi}</td>
+          </tr>
+        ` + tabla.innerHTML;
+
+        // Acumula ROI por par
+        if (!resumen[trade.par]) resumen[trade.par] = { totalGanancia: 0, totalPosicion: 0, cantidad: 0 };
+        resumen[trade.par].totalGanancia += parseFloat(trade.ganancia);
+        resumen[trade.par].totalPosicion += parseFloat(trade.posicion);
+        resumen[trade.par].cantidad += 1;
+      });
+
+      // Muestra el resumen por par
+      const summaryGrid = document.getElementById("summary-grid");
+      summaryGrid.innerHTML = "";
+      Object.keys(resumen).forEach(par => {
+        const total = resumen[par].totalGanancia;
+        const totalPos = resumen[par].totalPosicion;
+        let porcentaje = totalPos !== 0 ? (total / totalPos) * 100 : 0;
+        let clase = porcentaje > 0 ? "positivo" : (porcentaje < 0 ? "negativo" : "neutro");
+        summaryGrid.innerHTML += `
+          <div class="summary-card ${clase}">
+            <div>🔗 <b>${par}</b></div>
+            <div>${porcentaje >= 0 ? "📈" : "📉"} ${porcentaje.toFixed(2)}%</div>
+            <div>Operaciones: ${resumen[par].cantidad}</div>
+          </div>
+        `;
+      });
+    }
+    function borrarHistorial() {
+      localStorage.removeItem("historialTrades");
+      cargarHistorial();
+    }
+    cargarHistorial();
+  </script>
+</body>
+</html>

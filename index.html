@@ -8,6 +8,19 @@
 </head>
 <body>
   <h1 style="text-align:center; margin-top:32px;">💸 Calculadora de retorno de pérdidas/ganancias 📊</h1>
+<div class="selector-center">  
+  <div class="selector-wrapper">
+   <label for="moneda">🪙 ¿Qué moneda querés invertir? 🪙</label>
+   <select id="moneda">
+    <option value="BTCUSDT">Bitcoin (BTC)</option>
+    <option value="ETHUSDT">Ethereum (ETH)</option>
+    <option value="SANDUSDT">The Sandbox (SAND)</option>
+    <option value="DOTUSDT">Polkadot (DOT)</option>
+    <option value="SOLUSDT">Solana (SOL)</option>
+    <option value="AAVEUSDT">Aave (AAVE)</option>
+   </select>
+   </div>
+ </div>
   <div class="main-wrapper">
     <div></div> <!-- Columna vacía para empujar la calculadora a la derecha -->
     <div class="container">
@@ -52,11 +65,23 @@
       </div>
     </div>
   </div>
+  <div style="text-align:center; margin-top:32px;">
+    <a href="historial.html">
+      <button style="padding:12px 32px; font-size:18px; background:#1976d2; color:#fff; border:none; border-radius:8px; cursor:pointer;">
+        📜 Ver historial de trades
+      </button>
+    </a>
+  </div>
   <script>
     function calcular() {
       const entrada = parseFloat(document.getElementById("entrada").value);
       const salida = parseFloat(document.getElementById("salida").value);
       const posicion = parseFloat(document.getElementById("posicion").value);
+      const par = document.getElementById("moneda").value;
+      if (isNaN(entrada) || isNaN(salida) || isNaN(posicion) || entrada <= 0 || salida <= 0 || posicion <= 0) {
+        alert("Por favor, ingrese valores válidos.");
+        return;
+      }
 
       const unidades = posicion / entrada;
       const valorFinal = unidades * salida;
@@ -81,6 +106,23 @@
       `;
       document.getElementById("resultado").innerHTML = resultadoHTML;
       document.getElementById("limpiar").style.display = "block";
+
+      // Guardar el trade en el historial (localStorage)
+      const trade = {
+        entrada,
+        salida,
+        posicion,
+        unidades: unidades.toFixed(2),
+        valorFinal: valorFinal.toFixed(2),
+        ganancia: ganancia.toFixed(2),
+        roi: roi.toFixed(2),
+        fecha: new Date().toLocaleString(),
+        par
+      };
+
+      let historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
+      historial.push(trade);
+      localStorage.setItem("historialTrades", JSON.stringify(historial));
     }
 
     function limpiarCampos() {
@@ -91,3 +133,5 @@
       document.getElementById("limpiar").style.display = "none";
     }
   </script>
+</body>
+</html>
