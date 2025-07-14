@@ -26,8 +26,24 @@
     </table>
     <button onclick="borrarHistorial()" style="margin-top:20px;">🗑️ Borrar historial</button>
   </div>
+
+  <!-- Formulario para enviar historial por EmailJS -->
+<div style="margin-top:32px; text-align:center;">
+  <label for="correo">📬 Ingresá tu email:</label><br>
+  <input type="email" id="correo" placeholder="tucorreo@ejemplo.com" style="padding:8px; margin:12px; border-radius:6px; border:1px solid #ccc; width:260px;"><br>
+
+  <label for="mensaje">💬 Mensaje adicional:</label><br>
+  <textarea id="mensaje" rows="4" placeholder="Escribí un mensaje si querés..." style="width:300px; padding:8px; border-radius:6px; border:1px solid #ccc;"></textarea><br>
+
+  <button onclick="enviarEmailHistorial()" style="margin-top:12px; padding:10px 24px; background:#2196f3; color:#fff; border:none; border-radius:6px; cursor:pointer;">
+    📤 Enviar historial por EmailJS
+  </button>
+</div>
+ 
+  </div>
   <h2 style="text-align:center; margin-top:48px;">📊 Porcentaje total de ganancia/pérdida por cada par</h2>
   <div class="summary-grid" id="summary-grid"></div>
+  
   <script>
     function cargarHistorial() {
       const historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
@@ -78,7 +94,65 @@
       localStorage.removeItem("historialTrades");
       cargarHistorial();
     }
+    function enviarPorMail() {
+      const historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
+      if (historial.length === 0) {
+        alert("No hay historial para enviar.");
+        return;
+      }
+
+      let cuerpo = "📜 Historial de Trades:\n\n";
+      historial.forEach(trade => {
+        cuerpo += `Fecha: ${trade.fecha}\nPar: ${trade.par}\nEntrada: ${trade.entrada}\nSalida: ${trade.salida}\nPosición: ${trade.posicion}\nUnidades: ${trade.unidades}\nValor Final: ${trade.valorFinal}\nGanancia: ${trade.ganancia}\nROI: ${trade.roi}%\n\n`;
+      });
+
+      const asunto = "Historial de Trades";
+      const destinatario = ""; // ← Podés predefinir uno si querés
+      const mailtoLink = `mailto:${destinatario}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+
+      window.location.href = mailtoLink;
+    }
     cargarHistorial();
   </script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+    function enviarEmailHistorial() {
+    const correo = document.getElementById("correo").value.trim();
+    const mensaje = document.getElementById("mensaje").value.trim();
+    const historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
+
+    if (!correo) {
+      alert("Por favor ingresá un correo válido.");
+      return;
+    }
+    if (historial.length === 0) {
+      alert("No hay historial para enviar.");
+      return;
+    }
+
+    let contenido = "";
+    historial.forEach(trade => {
+      contenido += `Fecha: ${trade.fecha}\nPar: ${trade.par}\nEntrada: ${trade.entrada}\nSalida: ${trade.salida}\nPosición: ${trade.posicion}\nUnidades: ${trade.unidades}\nValor Final: ${trade.valorFinal}\nGanancia: ${trade.ganancia}\nROI: ${trade.roi}%\n\n`;
+    });
+
+    const datosEmail = {
+      correo: correo,
+      fecha_envio: new Date().toLocaleString(),
+      contenido_historial: contenido,
+      mensaje_usuario: mensaje || "Sin mensaje adicional"
+    };
+
+    emailjs.send("service_huyst8i", "template_67r20oq", datosEmail , "pFCM1LSEP1taIbh0X")
+      .then(() => {
+        alert("📧 Historial enviado exitosamente a " + correo);
+      })
+      .catch(error => {
+        console.error("Error al enviar email:", error);
+        alert("❌ Hubo un problema al enviar el correo.");
+      });
+  }
+window.enviarEmailHistorial = enviarEmailHistorial;  
+</script>
+
 </body>
 </html>

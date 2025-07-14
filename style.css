@@ -148,3 +148,36 @@ body {
   border: 1px solid #ccc;
   background-color: #fff;
 }
+@media (max-width: 1200px) {
+  .main-wrapper {
+    grid-template-columns: 1fr; /* una sola columna en pantallas pequeñas */
+    gap: 24px;
+    padding: 0 16px;
+  }
+
+  .container,
+  .chart-wrapper {
+    width: 100%;
+  }
+
+  .selector-wrapper label,
+  .selector-wrapper select {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .container button,
+  #limpiar {
+    width: 100%;
+  }
+
+  .selector-wrapper select {
+    width: 100%;
+    margin-top: 8px;
+  }
+}

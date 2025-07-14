@@ -132,6 +132,41 @@
       document.getElementById("resultado").innerHTML = "";
       document.getElementById("limpiar").style.display = "none";
     }
+    function generarYEnviarTxt() {
+    const historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
+    const correo = document.getElementById("correo").value;
+
+    if (!correo) {
+      alert("Por favor ingresá un correo válido.");
+      return;
+    }
+    if (historial.length === 0) {
+      alert("No hay historial para enviar.");
+      return;
+    }
+
+    let contenido = "📜 Historial de Trades\n\n";
+    historial.forEach(trade => {
+      contenido += `Fecha: ${trade.fecha}\nPar: ${trade.par}\nEntrada: ${trade.entrada}\nSalida: ${trade.salida}\nPosición: ${trade.posicion}\nUnidades: ${trade.unidades}\nValor Final: ${trade.valorFinal}\nGanancia: ${trade.ganancia}\nROI: ${trade.roi}%\n\n`;
+    });
+
+    const blob = new Blob([contenido], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "historial-trades.txt";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    const asunto = "Historial de Trades (.txt adjunto)";
+    const cuerpo = "Hola! Descargá el archivo adjunto con tu historial de operaciones.";
+    const mailtoLink = `mailto:${correo}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+
+    window.location.href = mailtoLink;
+  }
+
   </script>
 </body>
 </html>
