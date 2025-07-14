@@ -1,3 +1,11 @@
+.main-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
 /* Centra el contenido principal */
 body {
   background: #f7f7f7;
