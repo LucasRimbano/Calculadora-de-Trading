@@ -3,25 +3,30 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>💸 Datos a ingresar: | 📈 Gráfico TradingView</title>
+  <title>💸 Calculadora de retorno de pérdidas/ganancias | 📈 Gráfico TradingView</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1 style="text-align:center; margin-top:32px;">💸Calculadora de Inversión de pérdidas/ganancias 📊</h1>
+  <h1 style="text-align:center; margin-top:32px;">💸 Calculadora de retorno de pérdidas/ganancias 📊</h1>
   <div class="main-wrapper">
+    <div></div> <!-- Columna vacía para empujar la calculadora a la derecha -->
     <div class="container">
       <h2>💸 Calculadora de Inversión</h2>
-      <label for="entrada">🔽 Precio de entrada:</label>
-      <input type="number" id="entrada" step="0.01">
+      <h3 style="margin-bottom:16px;">📝 Datos a ingresar</h3>
+      <form id="form-calculadora" onsubmit="event.preventDefault(); calcular();">
+        <label for="entrada">🔽 Precio de entrada:</label>
+        <input type="number" id="entrada" step="0.01">
 
-      <label for="salida">🔼 Precio de salida:</label>
-      <input type="number" id="salida" step="0.01">
+        <label for="salida">🔼 Precio de salida:</label>
+        <input type="number" id="salida" step="0.01">
 
-      <label for="posicion">💵 Posición en dólares:</label>
-      <input type="number" id="posicion" step="0.01">
+        <label for="posicion">💵 Posición en dólares:</label>
+        <input type="number" id="posicion" step="0.01">
 
-      <button onclick="calcular()">🧮 Calcular</button>
-      <div id="resultado"></div>
+        <button type="submit">🧮 Calcular</button>
+        <div id="resultado"></div>
+        <button id="limpiar" type="button" style="margin-top:12px; display:none;" onclick="limpiarCampos()">🔄 Limpiar</button>
+      </form>
     </div>
     <div class="chart-wrapper">
       <h3>📊 Gráfico de TradingView</h3>
@@ -32,7 +37,7 @@
           new TradingView.widget({
             "width": 600,
             "height": 400,
-            "symbol": "NASDAQ:AAPL", // Cambia el símbolo por el que quieras mostrar
+            "symbol": "BINANCE:BTCUSDT", // Gráfico de Bitcoin
             "interval": "D",
             "timezone": "Etc/UTC",
             "theme": "light",
@@ -75,5 +80,14 @@
         <p>📊 ROI: ${roi.toFixed(2)}%</p>
       `;
       document.getElementById("resultado").innerHTML = resultadoHTML;
+      document.getElementById("limpiar").style.display = "block";
+    }
+
+    function limpiarCampos() {
+      document.getElementById("entrada").value = "";
+      document.getElementById("salida").value = "";
+      document.getElementById("posicion").value = "";
+      document.getElementById("resultado").innerHTML = "";
+      document.getElementById("limpiar").style.display = "none";
     }
   </script>
