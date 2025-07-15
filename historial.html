@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="style.css">
   <style>
     body {
-      background-image: url('fondo.png'); /* Cambia esto a la ruta de tu imagen */
+      background-image: url('fondo.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -14,7 +14,7 @@
       margin: 0;
     }
     .footer {
-      background-color: rgba(51, 51, 51, 0.8); /* Fondo semi-transparente */
+      background-color: rgba(51, 51, 51, 0.8);
       color: #fff;
       text-align: center;
       padding: 10px 0;
@@ -22,7 +22,9 @@
       bottom: 0;
       width: 100%;
     }
-  </style>  
+  </style>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <h1 style="text-align:center; margin-top:32px;">📜 Historial de Trades</h1>
@@ -46,23 +48,30 @@
     <button onclick="borrarHistorial()" style="margin-top:20px;">🗑️ Borrar historial</button>
   </div>
 
-  <!-- Formulario para enviar historial por EmailJS -->
-<div style="margin-top:32px; text-align:center;">
-  <label for="correo">📬 Ingresá tu email:</label><br>
-  <input type="email" id="correo" placeholder="tucorreo@ejemplo.com" style="padding:8px; margin:12px; border-radius:6px; border:1px solid #ccc; width:260px;"><br>
+  <div style="margin-top:32px; text-align:center;">
+    <label for="correo">📬 Ingresá tu email:</label><br>
+    <input type="email" id="correo" placeholder="tucorreo@ejemplo.com" style="padding:8px; margin:12px; border-radius:6px; border:1px solid #ccc; width:260px;"><br>
 
-  <label for="mensaje">💬 Mensaje adicional:</label><br>
-  <textarea id="mensaje" rows="4" placeholder="Escribí un mensaje si querés..." style="width:300px; padding:8px; border-radius:6px; border:1px solid #ccc;"></textarea><br>
+    <label for="mensaje">💬 Mensaje adicional:</label><br>
+    <textarea id="mensaje" rows="4" placeholder="Escribí un mensaje si querés..." style="width:300px; padding:8px; border-radius:6px; border:1px solid #ccc;"></textarea><br>
 
-  <button onclick="enviarEmailHistorial()" style="margin-top:12px; padding:10px 24px; background:#2196f3; color:#fff; border:none; border-radius:6px; cursor:pointer;">
-    📤 Enviar historial por EmailJS
-  </button>
-</div>
- 
+    <button onclick="enviarEmailHistorial()" style="margin-top:12px; padding:10px 24px; background:#2196f3; color:#fff; border:none; border-radius:6px; cursor:pointer;">
+      📤 Enviar historial por EmailJS
+    </button>
   </div>
+
   <h2 style="text-align:center; margin-top:48px;">📊 Porcentaje total de ganancia/pérdida por cada par</h2>
   <div class="summary-grid" id="summary-grid"></div>
-  
+
+  <h2 style="text-align:center; margin-top:48px;">📈 Rendimiento por par (Ganancia/Pérdida total)</h2>
+  <canvas id="graficoRendimiento" width="400" height="200" style="display:block; margin: 0 auto;"></canvas>
+
+  <div style="text-align:center; margin-top: 20px;">
+    <button onclick="toggleGrafico()" style="padding:10px; margin:5px; border-radius:6px;">👁️ Mostrar/Ocultar gráfico</button>
+    <button onclick="cambiarTipoGrafico()" style="padding:10px; margin:5px; border-radius:6px;">🥧 Cambiar a gráfico de torta/barras</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     function cargarHistorial() {
       const historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
@@ -85,14 +94,12 @@
           </tr>
         ` + tabla.innerHTML;
 
-        // Acumula ROI por par
         if (!resumen[trade.par]) resumen[trade.par] = { totalGanancia: 0, totalPosicion: 0, cantidad: 0 };
         resumen[trade.par].totalGanancia += parseFloat(trade.ganancia);
         resumen[trade.par].totalPosicion += parseFloat(trade.posicion);
         resumen[trade.par].cantidad += 1;
       });
 
-      // Muestra el resumen por par
       const summaryGrid = document.getElementById("summary-grid");
       summaryGrid.innerHTML = "";
       Object.keys(resumen).forEach(par => {
@@ -108,71 +115,114 @@
           </div>
         `;
       });
+
+      // Datos para gráfico
+      const pares = [];
+      const gananciasTotales = [];
+
+      Object.keys(resumen).forEach(par => {
+        pares.push(par);
+        gananciasTotales.push(resumen[par].totalGanancia);
+      });
+
+      // Tipo inicial de gráfico
+      window.tipoGrafico = window.tipoGrafico || 'bar';
+
+      // Destruir gráfico anterior si existe
+      if (window.graficoRendimiento instanceof Chart) {
+        window.graficoRendimiento.destroy();
+      }
+
+      const ctx = document.getElementById('graficoRendimiento').getContext('2d');
+      window.graficoRendimiento = new Chart(ctx, {
+        type: window.tipoGrafico,
+        data: {
+          labels: pares,
+          datasets: [{
+            label: 'Ganancia Total por Par',
+            data: gananciasTotales,
+            backgroundColor: gananciasTotales.map(g => g >= 0 ? 'rgba(33, 150, 243, 0.6)' : 'rgba(244, 67, 54, 0.6)'),
+            borderColor: gananciasTotales.map(g => g >= 0 ? 'rgba(33, 150, 243, 1)' : 'rgba(244, 67, 54, 1)'),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: window.tipoGrafico !== 'bar'
+            }
+          },
+          scales: window.tipoGrafico === 'bar' ? {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Ganancia Total'
+              }
+            }
+          } : {}
+        }
+      });
     }
+
     function borrarHistorial() {
       localStorage.removeItem("historialTrades");
       cargarHistorial();
     }
-    function enviarPorMail() {
+
+    function enviarEmailHistorial() {
+      const correo = document.getElementById("correo").value.trim();
+      const mensaje = document.getElementById("mensaje").value.trim();
       const historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
+
+      if (!correo) {
+        alert("Por favor ingresá un correo válido.");
+        return;
+      }
       if (historial.length === 0) {
         alert("No hay historial para enviar.");
         return;
       }
 
-      let cuerpo = "📜 Historial de Trades:\n\n";
+      let contenido = "";
       historial.forEach(trade => {
-        cuerpo += `Fecha: ${trade.fecha}\nPar: ${trade.par}\nEntrada: ${trade.entrada}\nSalida: ${trade.salida}\nPosición: ${trade.posicion}\nUnidades: ${trade.unidades}\nValor Final: ${trade.valorFinal}\nGanancia: ${trade.ganancia}\nROI: ${trade.roi}%\n\n`;
+        contenido += `Fecha: ${trade.fecha}\nPar: ${trade.par}\nEntrada: ${trade.entrada}\nSalida: ${trade.salida}\nPosición: ${trade.posicion}\nUnidades: ${trade.unidades}\nValor Final: ${trade.valorFinal}\nGanancia: ${trade.ganancia}\nROI: ${trade.roi}%\n\n`;
       });
 
-      const asunto = "Historial de Trades";
-      const destinatario = ""; // ← Podés predefinir uno si querés
-      const mailtoLink = `mailto:${destinatario}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+      const datosEmail = {
+        correo: correo,
+        fecha_envio: new Date().toLocaleString(),
+        contenido_historial: contenido,
+        mensaje_usuario: mensaje || "Sin mensaje adicional"
+      };
 
-      window.location.href = mailtoLink;
+      emailjs.send("service_huyst8i", "template_67r20oq", datosEmail , "pFCM1LSEP1taIbh0X")
+        .then(() => {
+          alert("📧 Historial enviado exitosamente a " + correo);
+        })
+        .catch(error => {
+          console.error("Error al enviar email:", error);
+          alert("❌ Hubo un problema al enviar el correo.");
+        });
     }
+
+    window.enviarEmailHistorial = enviarEmailHistorial;
+
+    function toggleGrafico() {
+      const canvas = document.getElementById('graficoRendimiento');
+      canvas.style.display = canvas.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function cambiarTipoGrafico() {
+      window.tipoGrafico = window.tipoGrafico === 'bar' ? 'pie' : 'bar';
+      cargarHistorial();
+    }
+
     cargarHistorial();
   </script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>
-    function enviarEmailHistorial() {
-    const correo = document.getElementById("correo").value.trim();
-    const mensaje = document.getElementById("mensaje").value.trim();
-    const historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
 
-    if (!correo) {
-      alert("Por favor ingresá un correo válido.");
-      return;
-    }
-    if (historial.length === 0) {
-      alert("No hay historial para enviar.");
-      return;
-    }
-
-    let contenido = "";
-    historial.forEach(trade => {
-      contenido += `Fecha: ${trade.fecha}\nPar: ${trade.par}\nEntrada: ${trade.entrada}\nSalida: ${trade.salida}\nPosición: ${trade.posicion}\nUnidades: ${trade.unidades}\nValor Final: ${trade.valorFinal}\nGanancia: ${trade.ganancia}\nROI: ${trade.roi}%\n\n`;
-    });
-
-    const datosEmail = {
-      correo: correo,
-      fecha_envio: new Date().toLocaleString(),
-      contenido_historial: contenido,
-      mensaje_usuario: mensaje || "Sin mensaje adicional"
-    };
-
-    emailjs.send("service_huyst8i", "template_67r20oq", datosEmail , "pFCM1LSEP1taIbh0X")
-      .then(() => {
-        alert("📧 Historial enviado exitosamente a " + correo);
-      })
-      .catch(error => {
-        console.error("Error al enviar email:", error);
-        alert("❌ Hubo un problema al enviar el correo.");
-      });
-  }
-window.enviarEmailHistorial = enviarEmailHistorial;  
-</script>
-<footer style="text-align:center; padding:2px; background-color:#f1f1f1">
+  <footer style="text-align:center; padding:2px; background-color:#f1f1f1">
     <a href="index.html" style="text-decoration:none; color:#adb9c2ef;">🔙 Volver a la página principal</a>
   </footer>
 </body>
