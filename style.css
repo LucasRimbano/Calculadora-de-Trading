@@ -1,21 +1,63 @@
+/* ==== GLOBAL ==== */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-image: url('fondo.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* ==== WRAPPER GRID ==== */
+.wrapper {
+  display: grid;
+  grid-template-rows: 1fr auto; /* contenido + footer */
+  min-height: 100vh;
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+}
+
+/* ==== BANNER ==== */
+.banner {
+  width: 100%;
+  height: 30px;
+  overflow: hidden;
+}
+
+.banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==== FOOTER ==== */
+.footer {
+  width: 100%;
+  background-color: rgba(51, 51, 51, 0.8);
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 14px;
+}
+
+/* ==== MAIN LAYOUT ==== */
 .main-wrapper {
   display: grid;
   grid-template-columns: 0.5fr 1fr 1fr;
   gap: 40px;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-}
-/* Centra el contenido principal */
-body {
-  background: #f7f7f7;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+  margin-top: 20px;
+  padding: 0 24px;
 }
 
-
-/* Ventana de la calculadora */
+/* ==== CALCULADORA ==== */
 .container {
   background: #fff;
   border-radius: 12px;
@@ -46,7 +88,7 @@ body {
 }
 
 .container button {
-  margin-top: 12px;
+  margin-top: 1px;
   padding: 10px 24px;
   background: #4caf50;
   color: #fff;
@@ -58,32 +100,37 @@ body {
 }
 
 .container button:hover {
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }
+
+#limpiar {
+  background: #f44336;
+  margin-top: 12px;
+}
+
+#resultado {
+  margin-top: 18px;
+  width: 100%;
+}
+
+/* ==== BOTÓN HISTORIAL ==== */
 .ver-historial-button {
   padding: 12px 32px;
+  margin-bottom: 20px;
   font-size: 18px;
   background: #1976d2;
   color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.2s; /* Añade una transición suave */
+  transition: transform 0.2s;
 }
 
 .ver-historial-button:hover {
-  transform: scale(1.1); /* Aumenta el tamaño del botón al 110% */
-}
-#limpiar {
-  background: #f44336;
-  margin-top: 12px;
-}
-#resultado {
-  margin-top: 18px;
-  width: 100%;
+  transform: scale(1.1);
 }
 
-/* Ventana del gráfico */
+/* ==== GRÁFICO ==== */
 .chart-wrapper {
   background: #fff;
   border-radius: 12px;
@@ -105,57 +152,10 @@ body {
   justify-content: center;
 }
 
- .historial-table-container {
-      width: 100vw;
-      margin: 0;
-      padding: 0;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      margin-bottom: 32px;
-    }
-    th, td {
-      padding: 16px 12px;
-      border-bottom: 1px solid #e0e0e0;
-      text-align: center;
-    }
-    th {
-      background: #f1f3f6;
-      font-size: 18px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 24px;
-      margin: 32px 0;
-      width: 100vw;
-      padding: 0 24px;
-    }
-    .summary-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      padding: 24px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .summary-card.positivo { color: #388e3c; }
-    .summary-card.negativo { color: #d32f2f; }
-    .summary-card.neutro { color: #757575; }
-    .selector-wrapper {
-  text-align: center;
-  margin: 24px 0;
-}
-
+/* ==== SELECTOR DE MONEDA ==== */
 .selector-wrapper {
   text-align: center;
-  margin: 300x 0 32px;
+  margin: 24px 0 32px;
 }
 
 .selector-wrapper label {
@@ -170,9 +170,63 @@ body {
   border: 1px solid #ccc;
   background-color: #fff;
 }
+
+/* ==== TABLA DE HISTORIAL ==== */
+.historial-table-container {
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  margin-bottom: 32px;
+}
+
+th, td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+th {
+  background: #f1f3f6;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* ==== CARDS RESUMEN ==== */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin: 32px 0;
+  width: 100vw;
+  padding: 0 24px;
+}
+
+.summary-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 24px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.summary-card.positivo { color: #388e3c; }
+.summary-card.negativo { color: #d32f2f; }
+.summary-card.neutro { color: #757575; }
+
+/* ==== RESPONSIVE ==== */
 @media (max-width: 1200px) {
   .main-wrapper {
-    grid-template-columns: 1fr; /* una sola columna en pantallas pequeñas */
+    grid-template-columns: 1fr;
     gap: 24px;
     padding: 0 16px;
   }

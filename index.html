@@ -1,4 +1,3 @@
-<!-- filepath: investment-calculator/index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,77 +6,92 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1 style="text-align:center; margin-top:32px;">💸 Calculadora de retorno de pérdidas/ganancias 📊</h1>
-<div class="selector-center">  
-  <div class="selector-wrapper">
-   <label for="moneda">🪙 ¿Qué moneda querés invertir? 🪙</label>
-   <select id="moneda">
-    <option value="BTCUSDT">Bitcoin (BTC)</option>
-    <option value="ETHUSDT">Ethereum (ETH)</option>
-    <option value="SANDUSDT">The Sandbox (SAND)</option>
-    <option value="DOTUSDT">Polkadot (DOT)</option>
-    <option value="SOLUSDT">Solana (SOL)</option>
-    <option value="AAVEUSDT">Aave (AAVE)</option>
-   </select>
-   </div>
- </div>
-  <div class="main-wrapper">
-    <div></div> <!-- Columna vacía para empujar la calculadora a la derecha -->
-    <div class="container">
-      <h2>💸 Calculadora de Inversión</h2>
-      <h3 style="margin-bottom:16px;">📝 Datos a ingresar</h3>
-      <form id="form-calculadora" onsubmit="event.preventDefault(); calcular();">
-        <label for="entrada">🔽 Precio de entrada:</label>
-        <input type="number" id="entrada" step="0.01">
-
-        <label for="salida">🔼 Precio de salida:</label>
-        <input type="number" id="salida" step="0.01">
-
-        <label for="posicion">💵 Posición en dólares:</label>
-        <input type="number" id="posicion" step="0.01">
-
-        <button type="submit">🧮 Calcular</button>
-        <div id="resultado"></div>
-        <button id="limpiar" type="button" style="margin-top:12px; display:none;" onclick="limpiarCampos()">🔄 Limpiar</button>
-      </form>
+  <div class="wrapper">
+    <div class="banner">
+      <img src="banner.webp" alt="Banner Principal" />
     </div>
-    <div class="chart-wrapper">
-      <h3>📊 Gráfico de TradingView</h3>
-      <div class="tradingview-widget-container">
-        <div id="tradingview_12345"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-        <script type="text/javascript">
-          new TradingView.widget({
-            "width": 600,
-            "height": 400,
-            "symbol": "BINANCE:BTCUSDT", // Gráfico de Bitcoin
-            "interval": "D",
-            "timezone": "Etc/UTC",
-            "theme": "light",
-            "style": "1",
-            "locale": "es",
-            "toolbar_bg": "#f1f3f6",
-            "enable_publishing": false,
-            "allow_symbol_change": true,
-            "container_id": "tradingview_12345"
-          });
-        </script>
+
+    <h1 style="text-align:center; margin-top:32px;">💸 Calculadora de retorno de pérdidas/ganancias 📊</h1>
+
+    <div class="selector-center">  
+      <div class="selector-wrapper">
+        <label for="moneda">🪙 ¿Qué moneda querés invertir? 🪙</label>
+        <select id="moneda">
+          <option value="BTCUSDT">Bitcoin (BTC)</option>
+          <option value="ETHUSDT">Ethereum (ETH)</option>
+          <option value="SANDUSDT">The Sandbox (SAND)</option>
+          <option value="DOTUSDT">Polkadot (DOT)</option>
+          <option value="SOLUSDT">Solana (SOL)</option>
+          <option value="AAVEUSDT">Aave (AAVE)</option>
+        </select>
       </div>
     </div>
-  </div>
-  <div style="text-align:center; margin-top:32px;">
-    <a href="historial.html">
-     <button class="ver-historial-button">
-     📜 Ver historial de trades
-     </button>
-    </a>
-  </div>
+
+    <div class="main-wrapper">
+      <div></div> <!-- Columna vacía -->
+      <div class="container">
+        <h2>💸 Calculadora de Inversión</h2>
+        <h3 style="margin-bottom:16px;">📝 Datos a ingresar</h3>
+        <form id="form-calculadora" onsubmit="event.preventDefault(); calcular();">
+          <label for="entrada">🔽 Precio de entrada:</label>
+          <input type="number" id="entrada" step="0.01">
+
+          <label for="salida">🔼 Precio de salida:</label>
+          <input type="number" id="salida" step="0.01">
+
+          <label for="posicion">💵 Posición en dólares:</label>
+          <input type="number" id="posicion" step="0.01">
+
+          <button type="submit">🧮 Calcular</button>
+          <div id="resultado"></div>
+          <button id="limpiar" type="button" style="margin-top:12px; display:none;" onclick="limpiarCampos()">🔄 Limpiar</button>
+        </form>
+      </div>
+
+      <div class="chart-wrapper">
+        <h3>📊 Gráfico de TradingView</h3>
+        <div class="tradingview-widget-container">
+          <div id="tradingview_12345"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+          <script type="text/javascript">
+            new TradingView.widget({
+              "width": 600,
+              "height": 400,
+              "symbol": "BINANCE:BTCUSDT",
+              "interval": "D",
+              "timezone": "Etc/UTC",
+              "theme": "light",
+              "style": "1",
+              "locale": "es",
+              "toolbar_bg": "#f1f3f6",
+              "enable_publishing": false,
+              "allow_symbol_change": true,
+              "container_id": "tradingview_12345"
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:2px;">
+      <a href="historial.html">
+        <button class="ver-historial-button">📜 Ver historial de trades</button>
+      </a>
+    </div>
+
+    <footer class="footer">
+      <p>© 2025 Calculadora de Trading. Todos los derechos reservados Lucas Rimbano </p>
+      <a href="index.html" style="text-decoration:none; color:#adb9c2ef;">🔙 Volver a la página principal</a>
+    </footer>
+  </div> <!-- Cierre wrapper -->
+
   <script>
     function calcular() {
       const entrada = parseFloat(document.getElementById("entrada").value);
       const salida = parseFloat(document.getElementById("salida").value);
       const posicion = parseFloat(document.getElementById("posicion").value);
       const par = document.getElementById("moneda").value;
+
       if (isNaN(entrada) || isNaN(salida) || isNaN(posicion) || entrada <= 0 || salida <= 0 || posicion <= 0) {
         alert("Por favor, ingrese valores válidos.");
         return;
@@ -104,10 +118,10 @@
         <p>${ganancia >= 0 ? "📈" : "📉"} Ganancia/Pérdida: $${ganancia.toFixed(2)}</p>
         <p>📊 ROI: ${roi.toFixed(2)}%</p>
       `;
+
       document.getElementById("resultado").innerHTML = resultadoHTML;
       document.getElementById("limpiar").style.display = "block";
 
-      // Guardar el trade en el historial (localStorage)
       const trade = {
         entrada,
         salida,
@@ -132,41 +146,42 @@
       document.getElementById("resultado").innerHTML = "";
       document.getElementById("limpiar").style.display = "none";
     }
+
     function generarYEnviarTxt() {
-    const historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
-    const correo = document.getElementById("correo").value;
+      const historial = JSON.parse(localStorage.getItem("historialTrades")) || [];
+      const correo = document.getElementById("correo").value;
 
-    if (!correo) {
-      alert("Por favor ingresá un correo válido.");
-      return;
+      if (!correo) {
+        alert("Por favor ingresá un correo válido.");
+        return;
+      }
+
+      if (historial.length === 0) {
+        alert("No hay historial para enviar.");
+        return;
+      }
+
+      let contenido = "📜 Historial de Trades\n\n";
+      historial.forEach(trade => {
+        contenido += `Fecha: ${trade.fecha}\nPar: ${trade.par}\nEntrada: ${trade.entrada}\nSalida: ${trade.salida}\nPosición: ${trade.posicion}\nUnidades: ${trade.unidades}\nValor Final: ${trade.valorFinal}\nGanancia: ${trade.ganancia}\nROI: ${trade.roi}%\n\n`;
+      });
+
+      const blob = new Blob([contenido], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "historial-trades.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      const asunto = "Historial de Trades (.txt adjunto)";
+      const cuerpo = "Hola! Descargá el archivo adjunto con tu historial de operaciones.";
+      const mailtoLink = `mailto:${correo}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+
+      window.location.href = mailtoLink;
     }
-    if (historial.length === 0) {
-      alert("No hay historial para enviar.");
-      return;
-    }
-
-    let contenido = "📜 Historial de Trades\n\n";
-    historial.forEach(trade => {
-      contenido += `Fecha: ${trade.fecha}\nPar: ${trade.par}\nEntrada: ${trade.entrada}\nSalida: ${trade.salida}\nPosición: ${trade.posicion}\nUnidades: ${trade.unidades}\nValor Final: ${trade.valorFinal}\nGanancia: ${trade.ganancia}\nROI: ${trade.roi}%\n\n`;
-    });
-
-    const blob = new Blob([contenido], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "historial-trades.txt";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    const asunto = "Historial de Trades (.txt adjunto)";
-    const cuerpo = "Hola! Descargá el archivo adjunto con tu historial de operaciones.";
-    const mailtoLink = `mailto:${correo}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-
-    window.location.href = mailtoLink;
-  }
-
   </script>
 </body>
 </html>
