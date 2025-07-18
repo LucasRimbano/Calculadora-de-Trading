@@ -257,3 +257,47 @@ th {
     margin-top: 8px;
   }
 }
+/* Estilos para el contenedor del conversor */
+.conversor-container {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  flex-direction: column; /* Alinea los elementos en columna */
+  margin: 50px; /* Espaciado alrededor del contenedor */
+  
+
+}
+
+/* Estilo del formulario del conversor */
+.conversor-form {
+  background-color: white; /* Fondo blanco */
+  padding: 20px; /* Espaciado interno */
+  border-radius: 5px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+  width: 300px; /* Ancho del formulario */
+}
+
+/* Estilo de los campos de entrada */
+.conversor-form input[type="number"],
+.conversor-form select {
+  width: 90%; /* Ancho completo */
+  padding: 10px; /* Espaciado interno */
+  margin-bottom: 10px; /* Espacio entre campos */
+  border: 1px solid #ccc; /* Borde gris claro */
+  border-radius: 4px; /* Bordes redondeados */
+}
+/* Estilo del botón de conversión */
+.conversor-form button {
+  width: 100%; /* Ancho completo */
+  padding: 10px; /* Espaciado interno */
+  background-color: #4CAF50; /* Color de fondo verde */
+  color: white; /* Texto blanco */
+  border: none; /* Sin borde */
+  border-radius: 8px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  transition: transform 0.2s;
+}
+.conversor-form button:hover {
+  background-color: #45a049; /* Color más oscuro al pasar por encima */
+  transform: scale(1.1);
+ }

@@ -78,13 +78,40 @@
         <button class="ver-historial-button">📜 Ver historial de trades</button>
       </a>
     </div>
+    
+    <!-- Contenedor del conversor de criptomonedas -->
+<div class="conversor-container">
+  <div class="conversor-form">
+    <h2>Conversor de Criptomonedas</h2>
+    
+    <label for="monto">Monto:</label>
+    <input type="number" id="monto" placeholder="100" min="0">
 
-    <footer class="footer">
-      <p>© 2025 Calculadora de Trading. Todos los derechos reservados Lucas Rimbano </p>
-      <a href="index.html" style="text-decoration:none; color:#adb9c2ef;">🔙 Volver a la página principal</a>
-    </footer>
+    <label for="tipo-intercambio">Tipo de Intercambio:</label>
+    <select id="tipo-intercambio">
+      <option value="usd-a-cripto">USD a Cripto</option>
+      <option value="cripto-a-usd">Cripto a USD</option>
+    </select>
+
+    <label for="cripto">Seleccioná la Cripto:</label>
+    <select id="cripto">
+      <option value="bitcoin">BTC</option>
+      <option value="ethereum">ETH</option>
+      <option value="the-sandbox">SAND</option>
+      <option value="polkadot">DOT</option>
+      <option value="avalanche-2">AVAX</option>
+      <option value="solana">SOL</option>
+    </select>
+
+    <button id="convertir-btn">Convertir</button>
+
+    <div id="resultado-conversion" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+  </div>
+</div>
+
+    
   </div> <!-- Cierre wrapper -->
-
+  
   <script>
     function calcular() {
       const entrada = parseFloat(document.getElementById("entrada").value);
@@ -183,5 +210,6 @@
       window.location.href = mailtoLink;
     }
   </script>
+  
 </body>
 </html>
