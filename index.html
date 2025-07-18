@@ -214,6 +214,37 @@
 
       window.location.href = mailtoLink;
     }
+  // Conversor USD <-> Cripto
+    document.getElementById("convertir-btn").addEventListener("click", async function () {
+      const monto = parseFloat(document.getElementById("monto").value);
+      const tipo = document.getElementById("tipo-intercambio").value;
+      const cripto = document.getElementById("cripto").value;
+      const resultadoDiv = document.getElementById("resultado-conversion");
+
+      if (isNaN(monto) || monto <= 0) {
+        resultadoDiv.innerHTML = "❌ Por favor ingresá un monto válido.";
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${cripto}&vs_currencies=usd`);
+        const data = await response.json();
+        const precio = data[cripto].usd;
+
+        let resultado;
+        if (tipo === "usd-a-cripto") {
+          resultado = monto / precio;
+          resultadoDiv.innerHTML = `💱 Con $${monto} USD podés comprar <strong>${resultado.toFixed(6)}</strong> ${cripto.toUpperCase()}`;
+        } else {
+          resultado = monto * precio;
+          resultadoDiv.innerHTML = `💵 Con ${monto} ${cripto.toUpperCase()} obtendrás <strong>$${resultado.toFixed(2)}</strong> USD`;
+        }
+
+      } catch (error) {
+        resultadoDiv.innerHTML = "⚠️ Error al obtener los precios. Intentá más tarde.";
+        console.error(error);
+      }
+    });  
   </script>
   
 </body>
