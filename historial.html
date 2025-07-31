@@ -25,6 +25,10 @@
   </style>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  emailjs.init('Dryij0S4NzIUCpDbM'); // tu public key
+</script>
 </head>
 <body>
   <h1 style="text-align:center; margin-top:32px;">📜 Historial de Trades</h1>
@@ -197,7 +201,7 @@
         mensaje_usuario: mensaje || "Sin mensaje adicional"
       };
 
-      emailjs.send("service_huyst8i", "template_67r20oq", datosEmail , "pFCM1LSEP1taIbh0X")
+      emailjs.send("service_huyst8i", "template_67r20oq", datosEmail , "Dryij0S4NzIUCpDbM")
         .then(() => {
           alert("📧 Historial enviado exitosamente a " + correo);
         })
